@@ -1,0 +1,83 @@
+# A message is published only when it matches a configured locality, passes
+# safety filtering, and matches at least one enabled rule.
+# Keyword matches never override the geographic filter.
+#
+# A keyword that is a configured place-name form matches every form of that
+# place, so "Вінниця" also matches "у Вінниці". Other keywords match the whole
+# word only. Use `location:<id>` to reference a place, or `patterns` for
+# inflected non-place words.
+#
+# Rules are OR-ed. A per-rule exclusion only suppresses that rule, so drill
+# wording is also listed globally. Otherwise "навчання в Писарівці" would still
+# match the configured-locality rule and be published.
+# Delete a global exclusion here if you want those messages kept.
+require_any_enabled_rule: true
+
+global_excluded_keywords:
+  - "тест"
+
+global_excluded_patterns:
+  - name: training_uk
+    regex: '(?<!\w)навча\w*(?!\w)'
+  - name: training_ru
+    regex: '(?<!\w)учебн\w*(?!\w)'
+  - name: drill_uk
+    regex: '(?<!\w)тренуван\w*(?!\w)'
+
+rules:
+  - name: Local Alert
+    enabled: true
+    mode: ANY
+    keywords:
+      - "Вінниця"
+      - "Винница"
+      - "Вінницькі Хутори"
+    excluded_keywords: []
+    patterns: []
+
+  - name: Relevant Event
+    enabled: true
+    mode: ALL
+    keywords:
+      - "Вінниця"
+    patterns:
+      - '(?<!\w)загроз\w{0,4}(?!\w)'
+    excluded_keywords: []
+
+  - name: Nearby Locations
+    enabled: true
+    mode: ANY
+    keywords:
+      - "Писарівка"
+      - "Зарванці"
+      - "Агрономічне"
+    excluded_keywords:
+      - "тест"
+      - "навчання"
+    patterns: []
+
+  - name: Configured locality
+    enabled: true
+    mode: ANY
+    keywords:
+      - "location:vinnytsia"
+      - "location:vinnytski_khutory"
+      - "location:pysarivka"
+      - "location:zarvantsi"
+      - "location:ahronomichne"
+      - "location:stryzhavka"
+      - "location:yakushyntsi"
+      - "location:luka_meleshkivska"
+      - "location:luka"
+      - "location:buchmy"
+      - "location:tiazhyliv"
+      - "location:nemyrivske_shose"
+      - "location:zamostia"
+      - "location:chekhova"
+      - "location:maslozhyr"
+      - "location:akademichnyi"
+      - "location:tsaryna"
+      - "location:stare_misto"
+      - "location:podillia"
+    excluded_keywords: []
+    patterns: []

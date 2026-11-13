@@ -1,0 +1,30 @@
+[project]
+name = "vinnytsia-monitor"
+version = "1.0.0"
+description = "Real-time Telegram monitor for Vinnytsia city and its immediate surroundings"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "telethon>=1.36.0,<2",
+    "pydantic>=2.7,<3",
+    "PyYAML>=6.0.1,<7",
+    "python-dotenv>=1.0.1,<2",
+    "segno>=1.6,<2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.2,<9",
+]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"

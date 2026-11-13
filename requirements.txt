@@ -1,0 +1,5 @@
+telethon>=1.36.0,<2
+pydantic>=2.7,<3
+PyYAML>=6.0.1,<7
+python-dotenv>=1.0.1,<2
+segno>=1.6,<2

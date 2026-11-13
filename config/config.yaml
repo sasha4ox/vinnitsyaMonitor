@@ -1,0 +1,13 @@
+telegram:
+  source_channels:
+    - "https://t.me/vin_info_ppo"
+    - "https://t.me/vinnytsiarealll"
+  destination_channel: "https://t.me/whynotinukrainian"
+
+runtime:
+  # In-memory duplicate suppression for the current process. Lost on restart,
+  # which is fine because startup does not replay channel history.
+  dedup_cache_size: 5000
+  # Wait out short FloodWait delays. Longer ones skip that single send so the
+  # live listener keeps running.
+  flood_wait_max_seconds: 300

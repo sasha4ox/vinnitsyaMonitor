@@ -1,0 +1,10 @@
+# Text removed before matching. These lines are on every post from the channel
+# and must not make the post look like it is about Vinnytsia.
+# The original message is still forwarded unchanged when something else matches.
+phrases:
+  - name: channel_footer
+    text: "Термінові новини Вінниці"
+  - name: channel_footer_link
+    text: "https://t.me/+lmOWbg1mAnE1YWUy"
+  - name: channel_footer_link_short
+    text: "t.me/+lmOWbg1mAnE1YWUy"

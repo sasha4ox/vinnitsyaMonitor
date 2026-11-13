@@ -1,0 +1,13 @@
+# A heading toward Vinnytsia or a nearby place is a local alert and is published.
+# "Курсом на Писарівку" means something is flying toward that place.
+#
+# These patterns still withhold a message. They match precise coordinates and
+# launch or basing details, including when a configured place is also named.
+# The list cannot be empty.
+patterns:
+  - name: coordinates_word
+    regex: '(?<!\w)координат'
+  - name: coordinate_pair
+    regex: '(?<!\w)\d{1,2}[.,]\d{3,}\s*[,;]\s*\d{1,2}[.,]\d{3,}(?!\w)'
+  - name: launch_or_basing
+    regex: '(?<!\w)(?:місце\s+пуску|место\s+пуска|пускові\s+установ|пусковые\s+установ|дислокац)'
