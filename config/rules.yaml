@@ -46,6 +46,14 @@ global_excluded_patterns:
     regex: '-\d{1,3}\s*%'
   - name: advert_purchase
     regex: '(?<!\w)покуп(?:к|ц)'
+  - name: advert_store_chain
+    regex: 'мережа\s+магазинів'
+  - name: advert_shchodnia
+    regex: 'shchodnia'
+  - name: advert_join_channel
+    regex: 'приєднуйтесь\s+до\s+каналу'
+  - name: advert_share_post
+    regex: 'поділіться\s+цим\s+дописом'
 
 rules:
   - name: Local Alert

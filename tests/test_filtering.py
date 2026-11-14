@@ -207,6 +207,32 @@ def test_retail_advertisements_are_not_published(catalog):
     assert any("advert_" in reason for reason in mall.reasons)
 
 
+def test_channel_promo_and_store_chain_are_not_published(catalog):
+    channel_promo = evaluate(
+        "Команда волонтерського каналу «ППО у Вінницькій області» працює цілодобово. "
+        "Приєднуйтесь до каналу прямо зараз: https://t.me/vin_info_ppo "
+        "Поділіться цим дописом із друзями та родичами з Вінниці та області.",
+        catalog,
+    )
+    shchodnia = evaluate(
+        "Шукайте у своєму улюбленому магазині «Щодня». "
+        "Мережа магазинів «Щодня» — сімейний маркет необхідних та якісних покупок. "
+        "м. Жмеринка, вул. Шевченка, 2а. м. Вінниця, вул. Замостянська, 34. "
+        "http://t.me/shchodnia_beauty",
+        catalog,
+    )
+    alert = evaluate("Шахед курсом на Вінницю. @vin_info_ppo", catalog)
+
+    assert channel_promo.geographically_relevant
+    assert "vinnytsia" in channel_promo.location_ids
+    assert channel_promo.should_forward is False
+    assert any("advert_" in reason for reason in channel_promo.reasons)
+    assert shchodnia.should_forward is False
+    assert "vinnytsia" in shchodnia.location_ids
+    assert any("advert_" in reason for reason in shchodnia.reasons)
+    assert alert.should_forward is True
+
+
 def test_road_incident_in_the_city_is_not_an_advertisement(catalog):
     decision = evaluate("ДТП на Хмельницькому шосе у Вінниці, об'їзд", catalog)
 
