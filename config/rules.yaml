@@ -23,6 +23,29 @@ global_excluded_patterns:
     regex: '(?<!\w)учебн\w*(?!\w)'
   - name: drill_uk
     regex: '(?<!\w)тренуван\w*(?!\w)'
+  # Shop ads often name Вінниця only as a street address. These phrases
+  # mark a commercial post. A real incident at the same address still passes,
+  # because the store name alone is not excluded.
+  - name: advert_installments
+    regex: 'оплата\s+частинами'
+  - name: advert_tire_fitment
+    regex: '(?<!\w)шиномонтаж'
+  - name: advert_wheel_alignment
+    regex: 'розвал[\s-]*сходження'
+  - name: advert_auto_shop
+    regex: '(?<!\w)автомагазин'
+  - name: advert_atl
+    regex: 'atl\.ua'
+  - name: advert_home_internet
+    regex: 'домашн\w{0,6}\s+інтернет'
+  - name: advert_gift
+    regex: '(?<!\w)подарунк'
+  - name: advert_price_tag
+    regex: '(?<!\w)цінник'
+  - name: advert_discount
+    regex: '-\d{1,3}\s*%'
+  - name: advert_purchase
+    regex: '(?<!\w)покуп(?:к|ц)'
 
 rules:
   - name: Local Alert

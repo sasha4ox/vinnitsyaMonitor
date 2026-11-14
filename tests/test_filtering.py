@@ -163,6 +163,57 @@ def test_drill_wording_is_not_published(catalog):
     assert any("Nearby Locations (тест)" in reason for reason in drill.reasons)
 
 
+def test_car_service_advertisement_is_not_published(catalog):
+    advertisement = """
+    А ВАШЕ АВТО ВЖЕ ГОТОВЕ ДО ЗИМИ?
+    заїжджайте в АТЛ!
+    Вінниця, Хмельницьке шосе, 130А
+    Шиномонтаж та балансування коліс
+    Оплата частинами від ПриватБанку
+    https://atl.ua/ua/network/vinnitsa/vinnica-hmelnickoe-shosse-130a-7
+    """
+    decision = evaluate(advertisement, catalog)
+
+    assert decision.geographically_relevant
+    assert "vinnytsia" in decision.location_ids
+    assert decision.should_forward is False
+    assert any("advert_" in reason for reason in decision.reasons)
+
+
+def test_retail_advertisements_are_not_published(catalog):
+    kyivstar = evaluate(
+        "Вінниця, трак Домашній Інтернет Київстар вже їде до вас! "
+        "вінничани зможуть завітати. На гостей чекають подарунки.",
+        catalog,
+    )
+    family = evaluate(
+        "У магазині Family стартує акція: -10% на всі товари з білими цінниками! "
+        "покупку на суму від 1500 грн, гарантовані подарунки. "
+        "ТЦ «Мир», вул. Келецька, 57",
+        catalog,
+    )
+    mall = evaluate(
+        "ТРЦ Small, просп. Юності, 18. Приходьте знайомитися з Домашнім Інтернетом Київстар",
+        catalog,
+    )
+
+    assert kyivstar.geographically_relevant
+    assert "vinnytsia" in kyivstar.location_ids
+    assert kyivstar.should_forward is False
+    assert any("advert_" in reason for reason in kyivstar.reasons)
+    assert family.should_forward is False
+    assert mall.should_forward is False
+    assert any("advert_" in reason for reason in family.reasons)
+    assert any("advert_" in reason for reason in mall.reasons)
+
+
+def test_road_incident_in_the_city_is_not_an_advertisement(catalog):
+    decision = evaluate("ДТП на Хмельницькому шосе у Вінниці, об'їзд", catalog)
+
+    assert decision.should_forward is True
+    assert "vinnytsia" in decision.location_ids
+
+
 def test_coordinates_are_not_published(catalog):
     decision = evaluate("Вінниця 49.2331, 28.4682", catalog)
 
@@ -196,6 +247,21 @@ def test_channel_footer_is_not_a_vinnytsia_trigger(catalog):
     assert local_alert.should_forward is True
     assert "tiazhyliv" in local_alert.location_ids
     assert "chekhova" in local_alert.location_ids
+    assert "vinnytsia" not in local_alert.location_ids
+
+
+def test_ppo_channel_signature_is_not_a_vinnytsia_trigger(catalog):
+    signature = "💪 Телеграм канал ППО Вінниця"
+    odesa = evaluate(
+        "🛵 Реактив намотує круги на півночі Одещини, до нас поки не заходить 🤷‍♂️\n\n" + signature,
+        catalog,
+    )
+    local_alert = evaluate(f"Реактивний Шахед на ТЯЖИЛІВ\n{signature}", catalog)
+
+    assert odesa.should_forward is False
+    assert "vinnytsia" not in odesa.location_ids
+    assert local_alert.should_forward is True
+    assert "tiazhyliv" in local_alert.location_ids
     assert "vinnytsia" not in local_alert.location_ids
 
 

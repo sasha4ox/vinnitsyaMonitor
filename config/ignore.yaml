@@ -8,3 +8,5 @@ phrases:
     text: "https://t.me/+lmOWbg1mAnE1YWUy"
   - name: channel_footer_link_short
     text: "t.me/+lmOWbg1mAnE1YWUy"
+  - name: ppo_channel_signature
+    text: "Телеграм канал ППО Вінниця"
