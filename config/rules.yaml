@@ -54,6 +54,10 @@ global_excluded_patterns:
     regex: 'приєднуйтесь\s+до\s+каналу'
   - name: advert_share_post
     regex: 'поділіться\s+цим\s+дописом'
+  - name: advert_subscribe
+    regex: 'підписуйтесь\s+на'
+  - name: advert_round_the_clock_channel
+    regex: 'єдиний.{0,80}канал.{0,160}цілодобово'
 
 rules:
   - name: Local Alert

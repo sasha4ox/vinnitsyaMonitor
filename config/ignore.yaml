@@ -10,3 +10,6 @@ phrases:
     text: "t.me/+lmOWbg1mAnE1YWUy"
   - name: ppo_channel_signature
     text: "Телеграм канал ППО Вінниця"
+  # Channel brand name alone must not make a promo look like a local alert.
+  - name: ppo_channel_brand
+    text: "ППО Вінниця"

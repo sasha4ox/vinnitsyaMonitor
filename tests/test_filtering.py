@@ -291,6 +291,37 @@ def test_ppo_channel_signature_is_not_a_vinnytsia_trigger(catalog):
     assert "vinnytsia" not in local_alert.location_ids
 
 
+def test_ppo_vinnytsia_channel_promos_are_not_published(catalog):
+    subscribe = evaluate(
+        "🔴 Підписуйтесь на ППО ВІННИЦЯ\n\n"
+        "ППО ВІННИЦЯ - це єдиний вінницький канал, який ЦІЛОДОБОВО та ТОЧНО "
+        "повідомляє про рух Шахедів в області.\n\n"
+        "Джерело: @vinnytsiarealll",
+        catalog,
+    )
+    round_the_clock = evaluate(
+        "🔴 🙂🤫🥲😣 Єдиний канал, який ЦІЛОДОБОВО повідомляє про рух Шахедів "
+        "в області 👉 ППО Вінниця\n\n"
+        "Джерело: @vinnytsiarealll",
+        catalog,
+    )
+    local_alert = evaluate(
+        "Шахед курсом на Вінницю\n💪 Телеграм канал ППО Вінниця",
+        catalog,
+    )
+
+    assert subscribe.should_forward is False
+    assert any("advert_" in reason for reason in subscribe.reasons)
+    assert round_the_clock.should_forward is False
+    assert any(
+        "advert_" in reason or "No configured Vinnytsia" in reason
+        for reason in round_the_clock.reasons
+    )
+    assert "vinnytsia" not in round_the_clock.location_ids
+    assert local_alert.should_forward is True
+    assert "vinnytsia" in local_alert.location_ids
+
+
 def test_the_same_text_always_gets_the_same_decision(catalog):
     text = "У Вінниці перебувайте в безпечному місці"
     assert evaluate(text, catalog) == evaluate(text, catalog)
